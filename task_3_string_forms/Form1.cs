@@ -19,34 +19,31 @@ namespace task_3_string_forms
         public Form1()
         {
             InitializeComponent();
-        }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
             try
             {
-                string fileName = textBox1.Text;
+                string fileName = "file.txt";
                 file = new StreamReader(fileName, Encoding.UTF8);
                 success = true;
             }
             catch (Exception ex)
             {
-                textBox1.Text = ex.Message;
+                textBox2.Text = ex.Message;
                 success = false;
             }
 
+
             if (success)
             {
-                string fileText = file.ReadLine();
-                textBox2.Text = fileText;
+                string fileText;
+                while (file.Peek() >= 0)
+                {
+                    fileText = file.ReadLine();
+                    textBox2.Text += fileText + Environment.NewLine;
 
-                textBox3.Text = TextHandler(fileText);
+                    textBox3.Text += TextHandler(fileText) + Environment.NewLine;
+                }
             }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            textBox1.Text = "";
         }
 
         static string TextHandler(string text)
@@ -63,6 +60,19 @@ namespace task_3_string_forms
             }
 
             return HandledText;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            string text = textBox1.Text;
+            string[] NewLineArr = text.Split('\n');
+            string textBoxHandledtext = "";
+
+            foreach(string str in NewLineArr){
+                textBoxHandledtext += TextHandler(str) + Environment.NewLine;
+            }
+
+            textBox4.Text = textBoxHandledtext;
         }
     }
 }
